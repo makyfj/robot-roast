@@ -1,16 +1,22 @@
 "use client";
 import { signIn, signOut } from "next-auth/react";
 import type { Session } from "next-auth";
+import { Button } from "./ui/button";
 
 const Auth = ({ session }: { session: Session | null }) => {
   return (
     <div>
       {session ? (
-        <button onClick={() => signOut({ callbackUrl: "/" })}>Sign out</button>
+        <Button
+          className="w-full"
+          onClick={() => signOut({ callbackUrl: "/" })}
+        >
+          Sign out
+        </Button>
       ) : (
-        <button onClick={() => signIn("discord", { callbackUrl: "/" })}>
+        <Button onClick={() => signIn("discord", { callbackUrl: "/" })}>
           Sign in
-        </button>
+        </Button>
       )}
     </div>
   );

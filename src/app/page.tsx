@@ -1,9 +1,9 @@
 import Link from "next/link";
+import Auth from "src/components/auth";
+import { CreatePost } from "src/components/post/create-post";
 
-import { CreatePost } from "src/app/_components/create-post";
 import { getServerAuthSession } from "src/server/auth";
 import { api } from "src/trpc/server";
-import Auth from "./_components/auth";
 
 export default async function Home() {
   const hello = await api.post.hello.query({ text: "from tRPC" });
@@ -63,6 +63,7 @@ async function CrudShowcase() {
   if (!session?.user) return null;
 
   const latestPost = await api.post.getLatest.query();
+  const allPosts = await api.post.getAll.query();
 
   return (
     <div className="w-full max-w-xs">
@@ -71,6 +72,13 @@ async function CrudShowcase() {
       ) : (
         <p>You have no posts yet.</p>
       )}
+      {allPosts.length > 0 &&
+        allPosts.map((post, i) => (
+          <div key={i}>
+            <p>{post.name}</p>
+            <p>{post.id}</p>
+          </div>
+        ))}
 
       <CreatePost />
     </div>
